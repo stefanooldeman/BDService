@@ -1,1 +1,1 @@
-<%@ Application Inherits="products_api.Global" %>
+<%@ Application Inherits="Joy.Global" %>

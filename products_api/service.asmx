@@ -1,1 +1,1 @@
-<%@ WebService Language="C#" Class="products_api.Service" %>
+<%@ WebService Language="C#" Class="Joy.Service" %>

@@ -8,66 +8,113 @@ using System.Web.Script.Services;
 // 3rd party
 using ServiceStack.Redis;
 using ServiceStack.Text;
+using ServiceStack.Common.Utils;
 
 
-namespace products_api
+namespace Joy
 {
+
+	public class User
+	{
+		public long id { get; set; }
+		public string username { get; set; }
+		public string password { get; set; }
+	}
 
 	public class Product
 	{
-		public long Id { get; set; }
-		public string Title { get; set; }
-		public string Category { get; set; }
-		public double Price { get; set; }
-		public int Aantal { get; set; }
+		public long id { get; set; }
+		public string title { get; set; }
+		public string category { get; set; }
+		public string price { get; set; }
+		public int quantity { get; set; }
 	}
 
-
-	[WebService (Namespace = "http://tempuri.org/")]
 	[ScriptService ()]
 	public class Service : System.Web.Services.WebService
 	{
-		readonly RedisClient redisClient = new RedisClient();
+		readonly RedisClient redis = new RedisClient();
 
-		public Service ()
-		{
-		}
-
+		public Service () { ; }
 
 		[WebMethod]
-		[ScriptMethod (UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-		public string addProduct (string title, string category, double price, int aantal)
+		public User GetOrCreateCustomer (string username, string password)
 		{
+			if (username == null || username.Length < 3)
+				throw new ArgumentNullException ("Username must be minimal 3 long");
+
+			var userIdAliasKey = "id:User:Username:" + username.ToLower () + "Password:" + password.ToLower();
+
+			using (var redisUsers = redis.As<User> ()) {
+				//Get a typed version of redis client that works with <User>
+				//Find user by DisplayName if exists
+				string userKey = redis.GetValue (userIdAliasKey);
+				if (userKey != null) {
+					//found! return
+					return redisUsers.GetValue (userKey);
+				}
+
+				//no user found, create a new one.
+				User user = new User();
+				user.id = redisUsers.GetNextSequence ();
+				user.username = username;
+				user.password = password;
+				redisUsers.Store (user);
+
+				//Save reference to User key using the DisplayName alias
+				redis.SetEntry (userIdAliasKey, user.CreateUrn ());
+
+				return redisUsers.GetById (user.id);
+			}
+		}
+
+		[WebMethod]
+		public string AddProduct (string customerId, string title, string category, string price, string quantity)
+		{
+			if (title == null || category == null || price == null) {
+				throw new HttpRequestValidationException("params title, category and price are mentadory");
+			}
+
+			//validate price
+			double value;
+			double.TryParse(price, out value);
+
 			var product = new Product {
-				Title = title,
-				Category = category,
-				Price = price,
-				Aantal = aantal
+				title = title,
+				category = category,
+				price = price, //do not convert to double as it causes problems with JSON
+				quantity = Convert.ToInt32(quantity)
 			};
-			using (var redisProduct = redisClient.As<Product>()) {	
-				product.Id = redisProduct.GetNextSequence();
+			using (var redisProduct = redis.As<Product>()) {
+				product.id = redisProduct.GetNextSequence();
 				redisProduct.Store(product);
 			}
 			return "201, Created";
 		}
 
 		[WebMethod]
-		[ScriptMethod (UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-		public object listProducts ()
+		public List<Product> GetProducts ()
 		{
-			using (var redisProduct = redisClient.As<Product>()) {
-				var list = new List<Dictionary<string, object>>();
+			using (var redisProduct = redis.As<Product>()) {
+				var list = new List<Product>();
 				foreach(var product in redisProduct.GetAll()) {
-					Dictionary<string, object> item = new  Dictionary<string, object>();
-					item.Add("id", product.Id);
-					item.Add("title", product.Title);
-					item.Add("price", product.Price);
-					item.Add("aantal", product.Aantal);
-					list.Add(item);
+					//do any magic here if needed
+					list.Add(product);
 				}
 				return list;
 			}
 		}
-	}
 
+		[WebMethod]
+		public User GetUser ()
+		{
+			//no user found, create a new one.
+			User user = new User();
+			user.id = 12312;
+			user.username = "foofofoof";
+			user.password = "123";
+
+			return user;
+		}
+	}
 }

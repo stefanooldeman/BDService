@@ -6,7 +6,7 @@ using ServiceStack.Redis;
 using ServiceStack.Text;
 using System.Collections.Generic;
 
-namespace products_api
+namespace Joy
 {
 	public class ScriptServiceAttribute : Attribute
 	{
