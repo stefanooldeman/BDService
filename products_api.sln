@@ -3,18 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "products_api", "products_api\products_api.csproj", "{E53BB6D6-7C13-4147-B63A-3D8A633765BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDService", "BDService\BDService.csproj", "{8F9A333D-265C-4BEF-9107-572963DF6059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F9A333D-265C-4BEF-9107-572963DF6059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9A333D-265C-4BEF-9107-572963DF6059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9A333D-265C-4BEF-9107-572963DF6059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9A333D-265C-4BEF-9107-572963DF6059}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E53BB6D6-7C13-4147-B63A-3D8A633765BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E53BB6D6-7C13-4147-B63A-3D8A633765BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E53BB6D6-7C13-4147-B63A-3D8A633765BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E53BB6D6-7C13-4147-B63A-3D8A633765BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = products_api\products_api.csproj
+		StartupItem = BDService\BDService.csproj
 	EndGlobalSection
 EndGlobal

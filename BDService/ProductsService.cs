@@ -7,40 +7,44 @@ namespace BDService
 
 	public class ProductsService : IService
 	{
-		public static List<Product> list = new List<Product> ();
 
-		public static List<Product> Reset ()
+		/**
+		 * Service Endpoints
+		 */
+
+		public ProductCollection GET(GetProducts request)  //Products class is matching the "/products" route
 		{
-			list.Add (new Product { Title = "Soup", Price = 1.59 });
-			list.Add (new Product { Title = "Milk", Price = 0.72 });
-			list.Add (new Product { Title = "Bananas", Price = 0.96 });
-			return list;
+
+			return new ProductCollection { Result = Repository.products};
 		}
 
-		protected static bool Add (Product p)
+		public bool POST(PostProductsReset request)
 		{
-			if (list.Contains (p)) {
-				return false;
-			}
-
-			list.Add (p);
+			Repository.products = new List<Product> ();
+			Repository.products.Add (new Product { Title = "Soup", Price = 1.59 });
+			Repository.products.Add (new Product { Title = "Milk", Price = 0.72 });
+			Repository.products.Add (new Product { Title = "Bananas", Price = 0.96 });
 			return true;
 		}
 
-		// Service Endpoints
-
-		public ProductsResponse GET(Products request)  //Products class is matching the "/products" route
+		public ProductEntity GET(ProductResource request) // For consistency use ProductEntity?
 		{
-
-			return new ProductsResponse { Result = this.list};
+			return new ProductEntity { Result = Repository.products[request.Id] };
 		}
 
-		public object POST(Product request) 
+		public bool POST(ProductResource p) 
 		{
-			return ProductService.Add ( request);
+			if (Repository.products.Contains (p)) {
+				return false;
+			}
+
+			Repository.products.Add (p);
+			return true;
 		}
 
-		// Done with Endpoints
+		/**
+		 * Protected methods
+		 */
 
 	}
 }

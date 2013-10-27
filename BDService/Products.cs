@@ -7,58 +7,41 @@ using ServiceStack.WebHost.Endpoints;
 namespace BDService
 {
 
-	// ROOT URL
-	[Route("/products")]
+	/**
+	 * Product Entity
+	 */
 	public class Product
 	{
+		public int Id { get; set; }
 		public string Title { get; set; }
 		public double Price { get; set; }
 	}
 
-	[Route("/products/reset")]
-	public class ProductsReset : Product {}
 
-	public class ProductsEntity
-	{
-		public Product Result { get; set; }
-	}
+	/**
+	 * The Interface endpoints and response types
+	 */
+	
+	[Route("/reset/products")]
+	public class PostProductsReset {}
+	// lacking a response type, use bool
 
-	public class ProductsCollection
+	[Route("/products", "GET")]
+	public class GetProducts {}
+
+	// TODO implement as Collection of type <Product>
+	public class ProductCollection
 	{
 		public List<Product> Result { get; set; }
 	}
 
+	[Route("/product", "POST")]
+	[Route("/product/{Id}", "GET,PUT,DELETE")]
+	public class ProductResource : Product {}
 
-	// HELLO URI
-	[Route("/hello")]
-	[Route("/hello/{Name}")]
-	public class Hello
+	public class ProductEntity
 	{
-		public string Name { get; set; }
+		public Product Result { get; set; }
 	}
 
-	public class HelloResponse
-	{
-		public string Result { get; set; }
-	}
-
-	public class Endpoints : IService
-	{
-		public object Any(Hello request)
-		{
-			return new HelloResponse { Result = "Hello, " + request.Name };
-		}
-
-
-		public object Any(Product request) 
-		{
-			return new ProductsCollection { Result = ProductService.getAll ()};
-		}
-
-		public object POST(Product request) 
-		{
-			return ProductService.Add ( request);
-		}
-	}
 }
-

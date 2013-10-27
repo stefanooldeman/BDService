@@ -1,12 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 namespace BDService
 {
-	public class Repository
+	public static class Repository
 	{
-		public Repository ()
-		{
-		}
+		public static List<Product> products = new List<Product> ();
 	}
 }
 

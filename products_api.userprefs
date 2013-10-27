@@ -1,13 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="products_api/service.asmx.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BDService/Global.asax.cs">
     <Files>
-      <File FileName="products_api/service.asmx.cs" Line="77" Column="5" />
+      <File FileName="BDService/Global.asax" Line="1" Column="2" />
+      <File FileName="BDService/Global.asax.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="products_api" expanded="True" selected="True">
+          <Node name="BDService" expanded="True">
+            <Node name="Global.asax" expanded="True">
+              <Node name="Global.asax.cs" selected="True" />
+            </Node>
+          </Node>
+          <Node name="products_api" expanded="True">
             <Node name="service.asmx" expanded="True" />
           </Node>
         </State>

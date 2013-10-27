@@ -1,12 +1,27 @@
 <%@ Page Language="C#" Inherits="BDService.Default" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html>
-<head runat="server">
-	<title>Default</title>
+<head>
+<style>
+	ul li span { margin-left: 20px; }
+</style>
 </head>
 <body>
-	<form id="form1" runat="server">
-		<asp:Button id="button1" runat="server" Text="Click me!" OnClick="button1Clicked" />
-	</form>
+	<h1>Overview of Services (endpoints)</h1>
+	<ul>
+		<li><a href="/v1/hello">/v1/hello</a><span>hello world endpoint</span></li>
+		<li><a href="/v1/products">/v1/products</a><span>view our catalog of products, order</span></li>
+		<li><a href="/v1/stock">/v1/stock</a><span>manage the stores stock</span></li>
+		<li><a href="/v1/user">/v1/user</a><span>create a user, manage a user by credentials</span></li>
+	</ul>
 </body>
 </html>
+
+<!-- 
+{"services": {
+	{endpoint: {uri: "/v1/hello", description: "hello world endpoint"},
+	{endpoint: {uri: "/v1/products", description: "view our catalog of products, order"}
+	{endpoint: {uri: "/v1/stock", description: "manage the stores stock"}
+	{endpoint: {uri: "/v1/user", description: "create a user, manage a user by credentials"}
+}}
+-->
