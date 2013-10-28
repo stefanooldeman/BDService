@@ -5,23 +5,29 @@ using System.Linq;
 namespace BDService
 {
 
-	public class IModel {}  // Don't use interface because I can't convert to it..
+	public interface IModel {
+		int Id { get; set; }
+
+	}
 
 	public class DataStore : Dictionary<int, IModel> {}
 
+	/**
+	 * Abstract StorageModel
+	 */
 	public abstract class StorageModel
 	{
-		protected DataStore data = new DataStore ();
-
-		public void Sync(DataStore data) {
-			this.data = data;
-		}
+		public abstract DataStore data { get; }
 
 		public int GetNextId ()
 		{
 			List<int> keys = new List<int> (this.data.Keys);
 			keys.Sort();
-			return keys [0];
+			if (keys.Count () == 0) {
+				return 10;
+			}
+			int newKey = keys[0] + 1;
+			return newKey;
 		}
 
 		public bool Exists (int Id)
@@ -41,6 +47,9 @@ namespace BDService
 
 		public virtual bool Add (IModel m)
 		{
+			if (this.Exists(m.Id)) {
+				return false;
+			}
 			int newId = this.GetNextId ();
 			this.data.Add (newId, m);
 			return true;
@@ -52,13 +61,21 @@ namespace BDService
 		}
 	}
 
+	
+	/**
+	 * Concrete Products (Derived StorageModel)
+	 */
 	public class Products : StorageModel {
+	
+		private static DataStore _data = new DataStore ();
 
-
-		public Products (DataStore data) {
-
-			this.data = data;
+		#region implemented abstract members of StorageModel
+		public override DataStore data {
+			get {
+				return  _data;
+			}
 		}
+		#endregion
 
 		public new List<Product> GetAll ()
 		{
@@ -73,25 +90,18 @@ namespace BDService
 		}
 	}
 
+	/**
+	 * Repository A "Collection" of DataStores
+	 */
 	public static class Repository {
 
-		private static DataStore ProductsData = new DataStore ();
-
-		private static Products ProductsInstance = null;
+		private static Products ProductsInstance = new  Products ();
 
 		public static Products Products {
-			get
-			{
-				if (Repository.ProductsInstance == null) {
-					Repository.ProductsInstance = new  Products (Repository.ProductsData, this);
-				}
+			get {
 				return Repository.ProductsInstance;
 			}
 		}
-
-//		public void Sync (DataStore data) { // Almost like transaction
-//			Repository.ProductsData = data;
-//		}
 	}
 
 }

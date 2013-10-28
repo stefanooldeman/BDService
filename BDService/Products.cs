@@ -15,9 +15,8 @@ namespace BDService
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public double Price { get; set; }
-		public double Amount { get; set; }
+		public int Amount { get; set; }
 	}
-
 
 	/**
 	 * The Interface endpoints and response types

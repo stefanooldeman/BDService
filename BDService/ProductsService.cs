@@ -20,9 +20,9 @@ namespace BDService
 
 		public bool POST(PostProductsReset request)
 		{
-			Repository.Products.Add (0, new Product { Title = "Soup", Price = 1.59 });
-			Repository.Products.Add (1, new Product { Title = "Milk", Price = 0.72 });
-			Repository.Products.Add (2, new Product { Title = "Bananas", Price = 0.96 });
+			Repository.Products.Add (new Product { Title = "Soup", Price = 1.59 });
+			Repository.Products.Add (new Product { Title = "Milk", Price = 0.72 });
+			Repository.Products.Add (new Product { Title = "Bananas", Price = 0.96 });
 			return true;
 		}
 
@@ -33,20 +33,9 @@ namespace BDService
 
 		public bool POST(ProductResource p) 
 		{
-//			if (Repository.Products.Exists(p.Id)) {
-//				return false;
-//			}
-
-//			int nextId = Repository.getNextId("products");
-//			p.Id = nextId;
-//			Repository.products.Add (nextId, p);
-
-			return true;
+			//TODO figure out how the request objects are populated (json request)
+			return Repository.Products.Add (p);
 		}
-
-		/**
-		 * Protected methods
-		 */
 
 	}
 }
