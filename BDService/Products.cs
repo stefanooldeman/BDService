@@ -10,11 +10,12 @@ namespace BDService
 	/**
 	 * Product Entity
 	 */
-	public class Product
+	public class Product : IModel
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public double Price { get; set; }
+		public double Amount { get; set; }
 	}
 
 
@@ -36,7 +37,7 @@ namespace BDService
 	}
 
 	[Route("/product", "POST")]
-	[Route("/product/{Id}", "GET,PUT,DELETE")]
+	[Route("/product/{Id}", "GET,PUT")] // DELETE (disabled)
 	public class ProductResource : Product {}
 
 	public class ProductEntity
