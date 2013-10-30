@@ -26,7 +26,7 @@ namespace BDService
 			if (keys.Count () == 0) {
 				return 10;
 			}
-			int newKey = keys[0] + 1;
+			int newKey = keys.Last() + 1;
 			return newKey;
 		}
 
@@ -51,6 +51,7 @@ namespace BDService
 				return false;
 			}
 			int newId = this.GetNextId ();
+			m.Id = newId;
 			this.data.Add (newId, m);
 			return true;
 		}

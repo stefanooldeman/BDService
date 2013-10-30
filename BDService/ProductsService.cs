@@ -34,6 +34,7 @@ namespace BDService
 		public bool POST(ProductResource p) 
 		{
 			//TODO figure out how the request objects are populated (json request)
+
 			return Repository.Products.Add (p);
 		}
 
