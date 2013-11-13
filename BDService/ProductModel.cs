@@ -10,7 +10,7 @@ namespace BDService
 	/**
 	 * Product Entity
 	 */
-	public class Product : IModel
+	public class ProductModel : IModel
 	{
 		public int Id { get; set; }
 		public string Title { get; set; }
@@ -21,27 +21,27 @@ namespace BDService
 	/**
 	 * The Interface endpoints and response types
 	 */
-	
 	[Route("/reset/products")]
-	public class PostProductsReset {}
+	public class ResetProducts {}
 	// lacking a response type, use bool
+
 
 	[Route("/products", "GET")]
 	public class GetProducts {}
-
-	// TODO implement as Collection of type <Product>
-	public class ProductCollection
+	public class ProductsCollection
 	{
-		public List<Product> Result { get; set; }
+		public List<ProductModel> Result { get; set; }
 	}
 
-	[Route("/product", "POST")]
-	[Route("/product/{Id}", "GET,PUT")] // DELETE (disabled)
-	public class ProductResource : Product {}
+	[Route("/products", "POST")]
+	public class PostProducts : List<ProductModel> {}
 
+	
+	[Route("/product/{id}", "GET,PUT,DELETE")]
+	public class ProductResource : ProductModel {}
 	public class ProductEntity
 	{
-		public Product Result { get; set; }
+		public ProductModel Result { get; set; }
 	}
 
 }
