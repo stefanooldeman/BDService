@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ServiceStack.ServiceHost;
 using ServiceStack.Common.Web; // for HTTP Status Codes
 using ServiceStack.ServiceInterface;
+using System.Net;
 
 namespace BDService
 {
@@ -14,7 +15,7 @@ namespace BDService
 		 * Service Endpoints
 		 */
 		public void OPTIONS(CreateNewUser request) {
-			base.Response.StatusCode = 200;
+			base.Response.StatusCode = (int) HttpStatusCode.NoContent;
 			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
 		}
@@ -36,7 +37,7 @@ namespace BDService
 		}
 
 		public void OPTIONS(UserResource request) {
-			base.Response.StatusCode = 200;
+			base.Response.StatusCode = (int) HttpStatusCode.NoContent;
 			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
 			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
 		}
@@ -44,7 +45,7 @@ namespace BDService
 		public UserModel GET(UserResource request)
 		{
 			if (!Repository.Users.UsernameExists (request.Username)) {
-				throw new HttpError (404, "User does not exists");
+				throw new HttpError (HttpStatusCode.NotFound, "User does not exists");
 			}
 			return Repository.Users.GetByUsername (request.Username);
 		}
@@ -52,7 +53,7 @@ namespace BDService
 		public UserModel PUT(UserResource request)
 		{
 			// TO UPDATE THE USER INFO
-			throw new HttpError (System.Net.HttpStatusCode.NotImplemented, "Not Implemented");
+			throw new HttpError (HttpStatusCode.NotImplemented, "Not Implemented");
 		}
 	}
 }

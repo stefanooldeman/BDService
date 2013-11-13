@@ -4,6 +4,7 @@ using ServiceStack.ServiceHost;
 using System.Linq;
 using ServiceStack.Common.Web; // for HTTP Status Codes
 using ServiceStack.ServiceInterface;
+using System.Net;
 
 namespace BDService
 {
@@ -15,7 +16,7 @@ namespace BDService
 		 * Service Endpoints
 		 */
 		public void OPTIONS(GetProducts request) {
-			base.Response.StatusCode = 200;
+			base.Response.StatusCode = 204;
 			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
 		}
@@ -36,12 +37,12 @@ namespace BDService
 				p.Id = Repository.Products.GetNextId ();
 				Repository.Products.Add (p);
 			}
-			base.Response.StatusCode = 201;
+			base.Response.StatusCode = (int) HttpStatusCode.Created;
 			return true;
 		}
 
 		public void OPTIONS(ProductResource request) {
-			base.Response.StatusCode = 200;
+			base.Response.StatusCode = (int) HttpStatusCode.NoContent;
 			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
 		}
