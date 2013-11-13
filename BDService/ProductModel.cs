@@ -17,7 +17,7 @@ namespace BDService
 		public double Price { get; set; }
 		public int Amount { get; set; }
 	}
-
+	
 	/**
 	 * The Interface endpoints and response types
 	 */
@@ -26,22 +26,18 @@ namespace BDService
 	// lacking a response type, use bool
 
 
-	[Route("/products", "GET")]
+	[Route("/products", "GET, OPTIONS")]
 	public class GetProducts {}
-	public class ProductsCollection
-	{
-		public List<ProductModel> Result { get; set; }
-	}
+
 
 	[Route("/products", "POST")]
 	public class PostProducts : List<ProductModel> {}
 
 	
-	[Route("/product/{id}", "GET,PUT,DELETE")]
+	[Route("/product/{id}", "GET,PUT,DELETE, OPTIONS")]
 	public class ProductResource : ProductModel {}
-	public class ProductEntity
-	{
-		public ProductModel Result { get; set; }
-	}
+
+
+
 
 }

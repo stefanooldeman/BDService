@@ -13,8 +13,13 @@ namespace BDService
 		/**
 		 * Service Endpoints
 		 */
+		public void OPTIONS(CreateNewUser request) {
+			base.Response.StatusCode = 200;
+			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
+		}
 
-		public UserEntity POST(CreateNewUser request)  //Products class is matching the "/products" route
+		public UserModel POST(CreateNewUser request)  //Products class is matching the "/products" route
 		{
 //			if (Repository.Users.
 			if (Repository.Users.UsernameExists (request.Username)) {
@@ -26,20 +31,25 @@ namespace BDService
 				string password = "Bd-123";
 				UserModel user = new UserModel { Username = request.Username, Password = password };
 				Repository.Users.Add (user);
-				return new UserEntity { Result = user };
+				return user;
 			}
 		}
 
-		public UserEntity GET(UserResource request)
+		public void OPTIONS(UserResource request) {
+			base.Response.StatusCode = 200;
+			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
+			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
+		}
+
+		public UserModel GET(UserResource request)
 		{
 			if (!Repository.Users.UsernameExists (request.Username)) {
 				throw new HttpError (404, "User does not exists");
 			}
-			UserModel user = Repository.Users.GetByUsername (request.Username);
-			return new UserEntity { Result = user };
+			return Repository.Users.GetByUsername (request.Username);
 		}
 
-		public UserEntity PUT(UserResource request)
+		public UserModel PUT(UserResource request)
 		{
 			// TO UPDATE THE USER INFO
 			throw new HttpError (System.Net.HttpStatusCode.NotImplemented, "Not Implemented");

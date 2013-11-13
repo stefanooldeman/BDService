@@ -1,23 +1,32 @@
 using System;
 using System.Collections.Generic;
 using ServiceStack.ServiceHost;
+using System.Linq;
+using ServiceStack.Common.Web; // for HTTP Status Codes
+using ServiceStack.ServiceInterface;
 
 namespace BDService
 {
 
-	public class ProductService : IService
+	public class ProductService : Service
 	{
 
 		/**
 		 * Service Endpoints
 		 */
-
-		public ProductsCollection GET(GetProducts request)  //Products class is matching the "/products" route
-		{
-
-			return new ProductsCollection { Result = Repository.Products.GetAll () };
+		public void OPTIONS(GetProducts request) {
+			base.Response.StatusCode = 200;
+			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
 		}
-		
+
+		public IEnumerable<ProductModel> GET(GetProducts request)  //Products class is matching the "/products" route
+		{
+			// only return products in stock!
+			var list = Repository.Products.GetAll ().Where (product => product.Amount != 0);
+			return list;
+		}
+
 		public bool POST(PostProducts request) 
 		{
 			foreach (ProductModel p in request) {
@@ -27,13 +36,19 @@ namespace BDService
 				p.Id = Repository.Products.GetNextId ();
 				Repository.Products.Add (p);
 			}
-
+			base.Response.StatusCode = 201;
 			return true;
 		}
 
-		public ProductEntity GET(ProductResource request) // For consistency use ProductEntity?
+		public void OPTIONS(ProductResource request) {
+			base.Response.StatusCode = 200;
+			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+			base.Response.AddHeader ("Access-Control-Allow-Headers", "Content-Type");
+		}
+
+		public ProductModel GET(ProductResource request) // For consistency use ProductEntity?
 		{
-			return new ProductEntity { Result = Repository.Products.Get (request.Id) };
+			return Repository.Products.Get (request.Id);
 		}
 
 		public bool PUT(ProductResource p) 
@@ -45,14 +60,13 @@ namespace BDService
 			return Repository.Products.Add (x);
 		}
 
-		
-		public ProductsCollection GET(ResetProducts request)
+		// Loose hanging fruits..	
+		public List<ProductModel> GET(ResetProducts request)
 		{
-//			Repository.Products = new  Products ();
 			Repository.Products.Add (new ProductModel { Title = "Soup", Price = 1.59 });
 			Repository.Products.Add (new ProductModel { Title = "Milk", Price = 0.72 });
 			Repository.Products.Add (new ProductModel { Title = "Bananas", Price = 0.96 });
-			return new ProductsCollection { Result = Repository.Products.GetAll () };
+			return Repository.Products.GetAll ();
 		}
 
 	}

@@ -21,30 +21,15 @@ namespace BDService
 	/**
 	 * The Interface endpoints and response types
 	 */
-	[Route("/user", "POST")]
+	[Route("/users", "POST, OPTIONS")]
 	public class CreateNewUser : UserModel {}
-	// returns Entity
 	
-	[Route("/user/auth", "POST")]
-	public class PostUserAuth : UserModel {}
-	// returns true or false 200 Ok
+//	[Route("/user/auth", "POST, OPTIONS")]
+//	public class PostUserAuth : UserModel {}
 
-	[Route("/user/{username}", "GET, PUT")]
+
+	[Route("/user/{username}", "GET, PUT, OPTIONS")]
 	public class UserResource : UserModel {}
-	// returns Entity
-
 	
-	/**
-	 * Response types
-	 */
-	public class UserEntity
-	{
-		public UserModel Result { get; set; }
-	}
-
-	public class UserCollection
-	{
-		public List<UserEntity> Result { get; set; }
-	}
 }
 
