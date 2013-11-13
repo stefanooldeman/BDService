@@ -7,11 +7,11 @@ namespace BDService
 
 	public interface IModel {
 		int Id { get; set; }
-
 	}
-
+	
 	public class DataStore : Dictionary<int, IModel> {}
-
+	public class UniqueStore : Dictionary<string, int> {}
+	
 	/**
 	 * Abstract StorageModel
 	 */
@@ -30,9 +30,9 @@ namespace BDService
 			return newKey;
 		}
 
-		public bool Exists (int Id)
+		public bool Exists (int id)
 		{
-			return this.data.ContainsKey (Id);
+			return this.data.ContainsKey (id);
 		}
 
 		public virtual List<IModel> GetAll ()
@@ -40,9 +40,9 @@ namespace BDService
 			return new List<IModel> (this.data.Values);
 		}
 
-		public virtual IModel Get (int Id) 
+		public virtual IModel Get (int id) 
 		{
-			return this.data [Id];
+			return this.data [id];
 		}
 
 		public virtual bool Add (IModel m)
@@ -56,15 +56,15 @@ namespace BDService
 			return true;
 		}
 
-		public virtual bool Remove (int Id)
+		public virtual bool Remove (int id)
 		{
-			return this.data.Remove (Id);
+			return this.data.Remove (id);
 		}
 	}
 
-	
+
 	/**
-	 * Concrete Products (Derived StorageModel)
+	 * Concrete =====> Products <===== (Derived StorageModel)
 	 */
 	public class Products : StorageModel {
 	
@@ -78,21 +78,68 @@ namespace BDService
 		}
 		#endregion
 
-		public new List<Product> GetAll ()
+		public new List<ProductModel> GetAll ()
 		{
-
-			return base.GetAll().Cast<Product>().ToList(); // .NET 4.0 Covariance
+			return base.GetAll().Cast<ProductModel>().ToList(); // .NET 4.0 Covariance
 		}
 
-		public new Product Get (int Id) // UGLY why I have to "new" this..
+		public new ProductModel Get (int id) // UGLY why I have to "new" this..
 		{
-
-			return (Product) base.Get(Id); // Simple ecplicit Cast
+			return (ProductModel) base.Get(id); // Simple ecplicit Cast
 		}
 	}
 
 	/**
-	 * Repository A "Collection" of DataStores
+	 * Concrete ====> Users <===== (Derived StorageModel)
+	 */
+	public class Users : StorageModel {
+
+		private static DataStore _data = new DataStore ();
+		private static UniqueStore _secondIndex = new UniqueStore ();
+
+		#region implemented abstract members of StorageModel
+		public override DataStore data {
+			get {
+				return  _data;
+			}
+		}
+		#endregion
+
+		public new List<UserModel> GetAll ()
+		{
+			return base.GetAll().Cast<UserModel>().ToList(); // .NET 4.0 Covariance
+		}
+
+		public new UserModel Get (int id) // UGLY why I have to "new" this.. (i'm not sure if I'm doing right, but it works)
+		{
+			return (UserModel) base.Get(id); // Simple ecplicit Cast
+		}
+
+
+		// Adding extra functionality as addition to typical StorageModel
+		
+		public virtual bool Add (UserModel m)
+		{
+			bool success = base.Add (m);
+			if (success) {
+				_secondIndex.Add (m.Username, m.Id);
+			}
+			return success;
+		}
+
+		public bool UsernameExists (string username) {
+			return _secondIndex.ContainsKey (username);
+		}
+
+		public UserModel GetByUsername (string username) {
+			int userId = _secondIndex [username];
+			return (UserModel) base.Get (userId);
+		}
+	
+	}
+
+	/**
+	 *  Repository A "Collection" of DataStores
 	 */
 	public static class Repository {
 
@@ -101,6 +148,14 @@ namespace BDService
 		public static Products Products {
 			get {
 				return Repository.ProductsInstance;
+			}
+		}
+
+		private static Users UsersInstance = new  Users ();
+
+		public static Users Users {
+			get {
+				return Repository.UsersInstance;
 			}
 		}
 	}

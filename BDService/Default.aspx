@@ -9,10 +9,9 @@
 <body>
 	<h1>Overview of Services (endpoints)</h1>
 	<ul>
-		<li><a href="/v1/hello">/v1/hello</a><span>hello world endpoint</span></li>
+		<li><a href="/v1/user">/v1/user</a><span>create a user, manage a user by credentials</span></li>
 		<li><a href="/v1/products">/v1/products</a><span>view our catalog of products, order</span></li>
 		<li><a href="/v1/stock">/v1/stock</a><span>manage the stores stock</span></li>
-		<li><a href="/v1/user">/v1/user</a><span>create a user, manage a user by credentials</span></li>
 	</ul>
 </body>
 </html>

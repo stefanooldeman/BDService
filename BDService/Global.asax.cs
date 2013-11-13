@@ -11,7 +11,7 @@ namespace BDService
 			//Tell Service Stack the name of your application and where to find your web services
 
 			// TODO check if the ProductService should be the first one.
-			public AppHost() : base("BeeDee Shop", typeof(BDService.ProductsService).Assembly) { }
+			public AppHost() : base("BeeDee Shop", typeof(BDService.ProductService).Assembly) { }
 
 			public override void Configure(Funq.Container container)
 			{

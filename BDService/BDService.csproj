@@ -76,9 +76,11 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Products.cs" />
-    <Compile Include="ProductsService.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="ProductModel.cs" />
+    <Compile Include="ProductService.cs" />
+    <Compile Include="UserService.cs" />
+    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
