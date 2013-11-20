@@ -10,8 +10,9 @@
 	<h1>Overview of Services (endpoints)</h1>
 	<ul>
 		<li><a href="/v1/user">/v1/user</a><span>create a user, manage a user by credentials</span></li>
+		<li><a href="/v1/user/yourusername/cart">/v1/user/yourname/cart</a><span>add a product, manage your cart by credentials</span></li>
 		<li><a href="/v1/products">/v1/products</a><span>view our catalog of products, order</span></li>
-		<li><a href="/v1/stock">/v1/stock</a><span>manage the stores stock</span></li>
+		<!--- <li><a href="/v1/stock">/v1/stock</a><span>manage the stores stock</span></li> -->
 	</ul>
 </body>
 </html>

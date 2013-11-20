@@ -10,18 +10,22 @@ namespace BDService
 	/**
 	 * Product Entity
 	 */
-	public class ShoppingItem  : ProductModel
+	public class UserCartModel : UserModel
 	{
-		public string Discount { get; set; }
+		public List<ProductModel> Products { get; set; }
+
+		public UserCartModel () {
+			Products = new List<ProductModel> ();
+		}
 	}
 
 	/**
 	 * The Interface endpoints and response types
 	 */
-	[Route("/user/{username}/cart", "GET, POST, OPTIONS")]
-	public class UserCartCollection : List<UserCartModel> {}
+	[Route("/user/{username}/cart", "POST, OPTIONS")]
+	public class UserCartCollection : UserCartModel {}
 
-	[Route("/user/{username}/cart/{itemId}", "GET, PUT, DELETE, OPTIONS")]
+	[Route("/user/{username}/cart/{id}", "GET, PUT, DELETE, OPTIONS")]
 	public class UserCartResource : UserCartModel {}
 
 }

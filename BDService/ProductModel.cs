@@ -34,9 +34,8 @@ namespace BDService
 	public class PostProducts : List<ProductModel> {}
 
 	
-	[Route("/product/{id}", "GET,PUT,DELETE, OPTIONS")]
+	[Route("/product/{id}", "GET, PUT, DELETE, OPTIONS")]
 	public class ProductResource : ProductModel {}
-
 
 
 

@@ -41,6 +41,11 @@ namespace BDService
 			return true;
 		}
 
+		public bool DELETE(ProductResource request)
+		{
+			return Repository.Products.Remove(request.Id);
+		}
+
 		public void OPTIONS(ProductResource request) {
 			base.Response.StatusCode = (int) HttpStatusCode.NoContent;
 			base.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");

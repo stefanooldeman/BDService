@@ -88,7 +88,7 @@ namespace BDService
 			return (ProductModel) base.Get(id); // Simple ecplicit Cast
 		}
 	}
-
+	
 	/**
 	 * Concrete ====> Users <===== (Derived StorageModel)
 	 */
@@ -117,7 +117,7 @@ namespace BDService
 
 
 		// Adding extra functionality as addition to typical StorageModel
-		
+
 		public virtual bool Add (UserModel m)
 		{
 			bool success = base.Add (m);
@@ -135,7 +135,43 @@ namespace BDService
 			int userId = _secondIndex [username];
 			return (UserModel) base.Get (userId);
 		}
-	
+	}
+	/**
+	 * Concrete ====> UsersCart <===== (Derived StorageModel)
+	 */
+	public class UsersCart : StorageModel {
+
+		private static DataStore _data = new DataStore ();
+
+		#region implemented abstract members of StorageModel
+		public override DataStore data {
+			get {
+				return  _data;
+			}
+		}
+		#endregion
+
+		// Hiding the base methods because the types should be overridden!
+		public new List<UserCartModel> GetAll ()
+		{
+			return base.GetAll().Cast<UserCartModel>().ToList(); // .NET 4.0 Covariance
+		}
+
+		public new UserCartModel Get (int id)
+		{
+			return (UserCartModel) base.Get(id); // Simple ecplicit Cast
+		}
+
+
+		// Adding extra functionality as addition to typical StorageModel
+		public virtual bool Add (UserCartModel userCart)
+		{
+			if (!Repository.Users.Exists (userCart.Id) || this.Exists(userCart.Id)) {
+				return false;
+			}
+			this.data.Add (userCart.Id, userCart);
+			return true;
+		}
 	}
 
 	/**
@@ -156,6 +192,14 @@ namespace BDService
 		public static Users Users {
 			get {
 				return Repository.UsersInstance;
+			}
+		}
+
+		private static UsersCart UsersCartInstance = new  UsersCart ();
+
+		public static UsersCart UsersCart {
+			get {
+				return Repository.UsersCartInstance;
 			}
 		}
 	}

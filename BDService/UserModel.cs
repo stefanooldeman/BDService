@@ -24,10 +24,6 @@ namespace BDService
 	[Route("/users", "POST, OPTIONS")]
 	public class CreateNewUser : UserModel {}
 	
-//	[Route("/user/auth", "POST, OPTIONS")]
-//	public class PostUserAuth : UserModel {}
-
-
 	[Route("/user/{username}", "GET, PUT, OPTIONS")]
 	public class UserResource : UserModel {}
 	
