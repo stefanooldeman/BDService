@@ -46,6 +46,7 @@ namespace BDService
 					record.Products.Add (p);
 				}
 			}
+
 //			Repository.Products. REPLACE THE AMOUNT
 			Repository.UsersCart.Add (record);
 			base.Response.StatusCode = (int) HttpStatusCode.Created;

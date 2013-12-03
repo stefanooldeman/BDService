@@ -15,6 +15,13 @@ namespace BDService
 		public int Id { get; set; }
 		public string Username { get; set; }
 		public string Password { get; set; }
+
+		// refactor?
+//		public UsersCart cart { get; }
+//
+//		public UserModel () {
+//			cart = new UsersCart ();
+//		}
 	}
 
 

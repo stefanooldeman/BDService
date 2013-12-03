@@ -11,10 +11,12 @@ namespace BDService
 	
 	public class DataStore : Dictionary<int, IModel> {}
 	public class UniqueStore : Dictionary<string, int> {}
+	// look into templates for T
 	
 	/**
 	 * Abstract StorageModel
 	 */
+//	public abstract class StorageModel<T> where T : IModel
 	public abstract class StorageModel
 	{
 		public abstract DataStore data { get; }
@@ -68,6 +70,7 @@ namespace BDService
 	 */
 	public class Products : StorageModel {
 	
+		//FIXME readonly is sufficient enough..
 		private static DataStore _data = new DataStore ();
 
 		#region implemented abstract members of StorageModel
